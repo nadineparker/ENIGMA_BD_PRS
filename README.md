@@ -56,8 +56,10 @@ or
 ``
 bash Singularity_RUN_ENIGMA_BD_PRS.sh 
 ``
+4. Once the analysis is complete see the [Sharing Outputs](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#4-sharing-outputs) section
 
-### Using the Docker Container
+
+### Using the Docker Container:
 1. Ensure your system has docker installed or download it from https://www.docker.com/get-started/. If using Docker Desktop, you may want to increase the resources. Navigate to settings Resources and maximize the available CPU limit, Memory limit, and Swap.
 2. While docker is running/loaded, open a terminal and type the following command depending on your operating system:
 ```
@@ -87,11 +89,11 @@ or
 ``
 bash Docker_RUN_ENIGMA_BD_PRS.sh 
 ``
+6. Once the analysis is complete see the [Sharing Outputs](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#4-sharing-outputs) section
 
 
 
-
-## Not Using a Container
+### Not Using a Container:
 1. The following tools and packages must be installed:
     - PLINK v1.9 (stable version) can be downloaded from here https://www.cog-genomics.org/plink/1.9/
       - Don’t forget to unzip the PLINK download
@@ -126,7 +128,7 @@ or
 ``
 bash RUN_ENIGMA_BD_PRS_noContainer.sh 
 ``
-
+4. Once the analysis is complete see the [Sharing Outputs](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#4-sharing-outputs) section
 
 ## 4. Sharing Outputs
 All outputs will be written to a directory named output_”SampleName”. The list of output files include:
