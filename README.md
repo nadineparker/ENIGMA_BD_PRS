@@ -21,9 +21,11 @@ or
 ```
 plink --vcf vcf_FilePrefix --make-bed --out New_FilePrefix
 ```
-3. If your data is in another genomic build you can use the [liftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool to convert to the GRCh38 (or hg38) build. Note once genomic coordinates have been lifter you will need to generate new plink files updating the chromosomes and positions of your plink v1 files. An example script (MakeLiftedPlinkFiles.sh) is provided on this GitHub page.
+3. If your data is in another genomic build you can use the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool to convert to the GRCh38 (or hg38) build. For instructinos on formatting a BED file see here https://genome.ucsc.edu/FAQ/FAQformat.html#format1. For the command line version of the LiftOver tool see instructions here https://genome.ucsc.edu/FAQ/FAQdownloads.html#liftOver. We also provide a basic example using the command line version on a linux maching in the [Additiona LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you and you can use this information for LiftOver.
 
-If you require help with converting your data please post an issue on the GitHub page using the issues tabe above.
+**IMPORTANT NOTE**, once genomic coordinates have been lifted you will need to generate new plink files updating the chromosomes and positions of your plink v1 files. An example script is provided in the [Additiona LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#additional-liftover-instructions) section below.
+
+If you require help with converting your data please post an issue on the GitHub page using the issues tab above.
 
 ## 3.	Perform the Analyses
 Within the downloaded “ENIGMA_BD_PRS” directory, you will find 3 potential scripts to run the analyses:
@@ -63,8 +65,8 @@ bash Singularity_RUN_ENIGMA_BD_PRS.sh
 1. Ensure your system has docker installed or download it from https://www.docker.com/get-started/. If using Docker Desktop, you may want to increase the resources. Navigate to settings Resources and maximize the available CPU limit, Memory limit, and Swap.
 2. While docker is running/loaded, open a terminal and type the following command depending on your operating system:
 ```
-LINUX: 
-MAC: docker pull –platform=linux/amd64 ghcr.io/comorment/ldpred2:latest
+LINUX/Windows/MAC (Intel): docker pull ghcr.io/comorment/ldpred2:latest 
+MAC (M1/M2): docker pull -–platform=linux/amd64 ghcr.io/comorment/ldpred2:latest
 ```
 3. You will also need to ensure you have R on your system. If not you can download R from here https://www.r-project.org/.
 4. Navigate to the ``ENIGMA_BD_PRS`` directory and open the ``Docker_RUN_ENIGMA_BD_PRS.sh`` script. Add the appropriate information requested at the top of the script and save the edits. Below is a list of the required information:
@@ -142,9 +144,95 @@ All outputs will be written to a directory named output_”SampleName”. The li
   -	``“Sample_Name”_rel.kin0`` – a file containing individuals with second degree genetically defined relatedness.
   -	``“Sample_Name”_rel.log`` – a log file for the genetic relatedness estimation
 
-We ask that you share all files in this directory along with the **ENIGMA BD phase 1 covariates** and the standard **ENIGMA FreeSurfer cortical and subcortical measures**. If you already have imaging and covariate data stored on the USC server there is no need to re-share this data. 
+We ask that you share all files in this directory along with the **[ENIGMA BD phase 1 covariates](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#enigma-bd-phase-1-covariates)** and the standard **ENIGMA FreeSurfer cortical (SurfAvg/ThickAvg.csv) and subcortical (LandRvolumes.csv) measures**. If you already have imaging and covariate data stored on the USC server there is no need to re-share this data. 
 
 Please ensure the participant identifiers used for the genetic data match the covariates and imaging data. If not, please provide a list which matches the different identifiers.
 
 Email Nadine Parker when you are ready to share your data.
+
+## Additional Information
+### ENIGMA BD Phase 1 Covariates
+ - ``SubjID`` - Subject ID should match the format of the IDs in the LandRvolumes.csv file and the SurfAvg/ThickAvg.csv files from the subcortical and cortical projects as well as the genetic data in the outputs from this analysis.
+ - ``Dx`` - Diagnosis coded as bipolar patient = BD and control = CN
+ - ``FullDx`` - Full diagnosis coded as: BD1, BD2, BDNOS, SchizoAffective. Set all controls = NA
+ - ``Age`` - Years at time of scan
+ - ``Sex`` - Males = M, Females = F
+ - ``Lithium`` - Subject taking lithium at the time of scan: 1 = yes, 0 = no
+ - ``AntiEpileptic`` - Subject taking antiepileptic at the time of scan: 1 = yes, 0 = no
+ - ``Gen1AntiPsych`` - Subject taking 1st generation (Typical) antipsychotics at the time of scan: 1 = yes, 0 = no
+ - ``Gen2AntiPsych`` - Subject taking 2nd generation (Atypical) antipsychotics at the time of scan: 1 = yes, 0 = no
+ - ``AntiDep`` - Subject taking antidepressants at the time of scan: 1 = yes, 0 = no
+ - ``MoodState`` - At the time of scan: Euthymic, Depressed, Manic, Hypomanic, Mixed. Set all controls = NA
+ - ``AgeofOnset`` - Age of Onset (in years) of the first DSM-defined mood episode. Set all controls = NA
+ - ``HistoryPsychosis`` - History of psychotic episodes: 1 = yes, 0 = no. Set all controls = NA
+ - ``Site`` - If cohort data was collected across multiple sites, indicate site for each subject. If all data is from same site, mark entire column = NA
+
+### Additional LiftOver Instructions
+#### Here are some basic instructions on how to generate a BED file and use the command line LiftOver tool to convert from GRCh37 (hg19) to CRCh38 (hg38). It is recommended that you still familiarize yourself with the official documentation (https://genome.ucsc.edu/FAQ/FAQformat.html#format1)
+ 1. Generate a BED file using your .bim plink file. Below is an example usine R code:
+```
+library(data.table); library(dplyr)
+
+## Read in the bim file
+bim <- read.table("YOUR_FILE.bim", sep = "\t", header=F)
+
+## Generate a zero base position by subtracting 1 from the current position
+bim$Pos0 <- bim$V4 - 1
+
+## Select the necessary columns and order them for BED formatting
+bim <- dplyr::select(bim, V1, Pos0, V4, V2)
+bim <- bim[order(bim, V1, Pos0),]
+
+## Ensure correct formatting of columns
+bim$Pos0 <- as.integer(bim$Pos0)
+bim$V4 <- as.integer(bim$V4)
+bim$V1 <- paste0("chr", bim$V1)
+
+## Write out your BED file
+write.table(bim, file="YOUR_NAME_FOR_LIFTOVER.bed", row.names = F, col.names = F, sep = "\t", quote = F)
+```
+
+ 2. Run LiftOver using the command line tool from [here]() and a GRCh37 (hg19) to GRCh38 (hg38) chainfile downloaded from [here](https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/). You will need to supply the following to run liftOver:
+   - ``liftOver`` the executable file to run the analyses
+   - ``YOUR_NAME_FOR_LIFTOVER.bed`` - the BED file that contains coordinates to lift to a new build (generated in the step above).
+   - ``hg19toHG38.over.chan.gz`` - a chainfile for lifting from your current genetic build to build GRCh38 (hg19). This example uses a GRCh37 (hg19) to GRCh38 (hg38) chainfile
+   - ``YOUR_NAME_FOR_LIFTED_GRCh38_FILE.bed`` - a file name for the new BED file generated with the lifted coordinates in build GRCh38 (hg38)
+   - ``YOUR_NAME_FOR_UNLIFTED_FILE.bed`` - a file name for the new BED file generated for those coordinates that could not be lifted to build GRCh38 (hg38)
+Below is an example script:
+```
+## NOTE You may want to batch this script
+liftOver YOUR_NAME_FOR_LIFTOVER.bed hg19toHG38.over.chan.gz YOUR_NAME_FOR_LIFTED_GRCh38_FILE.bed YOUR_NAME_FOR_UNLIFTED_FILE.bed
+```
+NOTE, the ``YOUR_NAME_FOR_LIFTED_GRCh38_FILE.bed`` file will not contain all of the original SNPs but should have a large majority (>90%) or something may have went wrong.
+
+#### Here are instructions on how to generate new plink v1 files for analyses once you have lifted coordinates to GRCh38 (hg38).
+ 1. First you will need to clean up the lifted data to make sure the chromosomes are correctly formated. Below is an example usine R code:
+
+```
+## Read in the lifted bed file with coordinates in GRCh38
+lifted_GRCh38 <- read.table("YOUR_LIFTED.bed", headter=F, sep="\t")
+
+## Make sure the chromosome column can be converted to numeric and includes autosomes only
+lifted_GRCh38$V1 <- gsub("chr", "", lifted_GRCh38$V1)
+lifted_GRCh38 <- lifted_GRCh38[lifted_GRCh38$V1 %in% c(1:22),]
+lifted_GRCh38$V1 <- as.numeric(lifted_GRCh38$V1)
+
+## Write out a new clean version of the lifted GRCh38 coordinates
+write.table(lifted_GRCh38, file="YOUR_LIFTED_CLEAN.bed", sep = "\t", row.names = F, col.names = F, quote = F)
+```
+
+2. Then you will need to update your existing plink v1 files. Below is an example script:
+```
+## Use the cleaned bed file from above to update the chromosome column
+ # Note, column 1 below is the cleand chromosome column and column 4 below is the SNP identifier
+plink --bfile YOUR_OLD_PLINK_Prefix --update-chr YOUR_LIFTED_CLEAN.bed 1 4 --make-bed --out YOUR_NEW_PLINK_Prefix
+
+## Use the cleaned bed file to update the position coordinates for the new Plink files
+ # Note, column 3 below contains the new coordinates in build GRCh38 (hg38)
+plink --bfile YOUR_NEW_PLINK_Prefix --update-map YOUR_LIFTED_CLEAN.bed 3 4 --make-bed --out YOUR_NEWER_PLINK_Prefix
+```
+
+
+
+
 
