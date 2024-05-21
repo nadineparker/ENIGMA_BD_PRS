@@ -192,12 +192,12 @@ bim$V1 <- paste0("chr", bim$V1)
 write.table(bim, file="YOUR_NAME_FOR_LIFTOVER.bed", row.names = F, col.names = F, sep = "\t", quote = F)
 ```
 
- 2. Run LiftOver using the command line tool from [here]() and a GRCh37 (hg19) to GRCh38 (hg38) chainfile downloaded from [here](https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/). You will need to supply the following to run liftOver:
-   - ``liftOver`` the executable file to run the analyses
-   - ``YOUR_NAME_FOR_LIFTOVER.bed`` - the BED file that contains coordinates to lift to a new build (generated in the step above).
-   - ``hg19toHG38.over.chan.gz`` - a chainfile for lifting from your current genetic build to build GRCh38 (hg19). This example uses a GRCh37 (hg19) to GRCh38 (hg38) chainfile
-   - ``YOUR_NAME_FOR_LIFTED_GRCh38_FILE.bed`` - a file name for the new BED file generated with the lifted coordinates in build GRCh38 (hg38)
-   - ``YOUR_NAME_FOR_UNLIFTED_FILE.bed`` - a file name for the new BED file generated for those coordinates that could not be lifted to build GRCh38 (hg38)
+ 2. Run LiftOver using the command line tool located [here](https://github.com/nadineparker/ENIGMA_BD_PRS/blob/main/liftOver) and a GRCh37 (hg19) to GRCh38 (hg38) chainfile downloaded from [here](https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/). You will need to supply the following to run liftOver:
+    - ``liftOver`` the executable file to run the analyses
+    - ``YOUR_NAME_FOR_LIFTOVER.bed`` - the BED file that contains coordinates to lift to a new build (generated in the step above).
+    - ``hg19toHG38.over.chan.gz`` - a chainfile for lifting from your current genetic build to build GRCh38 (hg19). This example uses a GRCh37 (hg19) to GRCh38 (hg38) chainfile
+    - ``YOUR_NAME_FOR_LIFTED_GRCh38_FILE.bed`` - a file name for the new BED file generated with the lifted coordinates in build GRCh38 (hg38)
+    - ``YOUR_NAME_FOR_UNLIFTED_FILE.bed`` - a file name for the new BED file generated for those coordinates that could not be lifted to build GRCh38 (hg38)
 Below is an example script:
 ```
 ## NOTE You may want to batch this script
