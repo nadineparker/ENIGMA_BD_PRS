@@ -21,15 +21,15 @@ or
 ```
 plink --vcf vcf_FilePrefix --make-bed --out New_FilePrefix
 ```
-3. If your data is in another genomic build you can use the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool to convert to the GRCh38 (or hg38) build. For instructinos on formatting a BED file see here https://genome.ucsc.edu/FAQ/FAQformat.html#format1. For the command line version of the LiftOver tool see instructions here https://genome.ucsc.edu/FAQ/FAQdownloads.html#liftOver. We also provide a basic example using the command line version on a linux maching in the [Additiona LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you and you can use this information for LiftOver.
+3. If your data is in another genomic build you can use the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool to convert to the GRCh38 (or hg38) build. For instructinos on formatting a BED file see here https://genome.ucsc.edu/FAQ/FAQformat.html#format1. For the command line version of the LiftOver tool see instructions here https://genome.ucsc.edu/FAQ/FAQdownloads.html#liftOver. We also provide a basic example using the command line version on a linux machine in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you and you can use this information for LiftOver.
 
-**IMPORTANT NOTE**, once genomic coordinates have been lifted you will need to generate new plink files updating the chromosomes and positions of your plink v1 files. An example script is provided in the [Additiona LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#additional-liftover-instructions) section below.
+**IMPORTANT NOTE**, once genomic coordinates have been lifted you will need to generate new plink files updating the chromosomes and positions of your plink v1 files. An example script is provided in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#additional-liftover-instructions) section below.
 
 If you require help with converting your data please post an issue on the GitHub page using the issues tab above.
 
 ## 3.	Perform the Analyses
 Within the downloaded “ENIGMA_BD_PRS” directory, you will find 3 potential scripts to run the analyses:
-  - ``Singularity_RUN_ENIGMA_BD_PRS.sh`` – to run the singularity container. Instructions directly below in Using the Singularity Container
+  - ``Singularity_RUN_ENIGMA_BD_PRS.sh`` – to run the singularity container. Instructions directly below in the "Using the Singularity Container" section.
   -	``Docker_RUN_ENIGMA_BD_PRS.sh`` – to run the docker container. Skip to instructions in [Using the Docker Container](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#using-the-docker-container)
   -	``RUN_ENIGMA_BD_PRS_noContainer.sh`` – to run the analyses without any containers (requires installing software). Skip to instructions in [Not Using a Container](https://github.com/nadineparker/ENIGMA_BD_PRS/edit/main/README.md#not-using-a-container)
 
@@ -39,7 +39,7 @@ As mentioned above, we recommend using the singularity or docker containers on a
 1. Ensure that your system has singularity installed or download it from https://docs.sylabs.io/guides/3.0/user-guide/installation.html.
 2. Navigate to the “ENIGMA_BD_PRS” and open the “Singularity_RUN_ENIGMA_BD_PRS.sh” script. Add the appropriate information requested at the top of the script and save the edits. Below is a list of the required information:
     - ``Base_Dir``: replace the text “/PATH/TO/BASE/DIR” with the full path to a parent directory that contains all the necessary files and downloaded project directory. For example: export Base_Dir=/Users/nadine
-    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS_FILES directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS_FILES
+    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS
     - ``Sample_Dir``: replace the text “/PATH/TO/GENETIC/DATA” with the full path to your cohorts PLINK v1 files (NOTE, .bed, .bim, .fam should all be in the same directory). For example: export Sample_Dir=/Users/nadine/Documents
     - ``Prefix``: add the prefix used for the PLINK v1 files (.bed, .bim, .fam). For example: export Prefix=TOP_GRCh38
     - ``Sample_Name``: add the sample name/identifier. This will be used to name files. If you are running this analysis for multiple samples/cohorts this name will help differentiate outputs. For example: export Sample_Name=TOP
@@ -72,7 +72,7 @@ MAC (M1/M2): docker pull -–platform=linux/amd64 ghcr.io/comorment/ldpred2:late
 4. Navigate to the ``ENIGMA_BD_PRS`` directory and open the ``Docker_RUN_ENIGMA_BD_PRS.sh`` script. Add the appropriate information requested at the top of the script and save the edits. Below is a list of the required information:
 
     - ``Base_Dir``: replace the text “/PATH/TO/BASE/DIR” with the full path to a parent directory that contains all the necessary files and downloaded project directory. For example: export Base_Dir=/Users/nadine
-    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS_FILES directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS_FILES
+    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS
     - ``Sample_Dir``: replace the text “/PATH/TO/GENETIC/DATA” with the full path to your cohorts PLINK v1 files (NOTE, .bed, .bim, .fam should all be in the same directory). For example: export Sample_Dir=/Users/nadine/Documents
     - ``Prefix``: add the prefix used for the PLINK v1 files (.bed, .bim, .fam). For example: export Prefix=TOP_GRCh38
     - ``Sample_Name``: add the sample name/identifier. This will be used to name files. If you are running this analysis for multiple samples/cohorts this name will help differentiate outputs. For example: export Sample_Name=TOP
@@ -108,7 +108,7 @@ bash Docker_RUN_ENIGMA_BD_PRS.sh
 
 2. Navigate to the “ENIGMA_BD_PRS” directory and open the “RUN_ENIGMA_BD_PRS_noContainer.sh” script. Add the appropriate information requested at the top of the script and save the edits. Below is a list of the required information:
 
-    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS_FILES directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS_FILES
+    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS
     - ``Sample_Dir``: replace the text “/PATH/TO/GENETIC/DATA” with the full path to your cohorts PLINK v1 files (NOTE, .bed, .bim, .fam should all be in the same directory). For example: export Sample_Dir=/Users/nadine/Documents
     - ``Prefix``: add the prefix used for the PLINK v1 files (.bed, .bim, .fam). For example: export Prefix=TOP_GRCh38
     - ``Sample_Name``: add the sample name/identifier. This will be used to name files. If you are running this analysis for multiple samples/cohorts this name will help differentiate outputs. For example: export Sample_Name=TOP
@@ -118,7 +118,7 @@ bash Docker_RUN_ENIGMA_BD_PRS.sh
     - ``CLEAN``: if set to “yes” (the default) all intermediate files and directories will be removed at the end of the analysis. NOTE: if you are running multiple analyses for different samples in parallel you will need to set CLEAN=no. This will prevent necessary directories from being deleted when one sample finishes before the other(s).
     - ``PLINK``: replace the text “/path/to/plink” with the full path to the plink executable file. For example: export PLINK=/Users/nadine/Documents/plink_linux/plink
     - ``PLINK2``: replace the text “/path/to/plink2” with the full path to the plink2 executable file. For example: export PLINK2=/Users/nadine/Documents/plink2_linux/plink2
-    - Ensure that you have R and python on your machine and if using a server ensure they are loaded. For example to load R on a server you may need to add something resembling “module load R/4.0.0” to the script or to your batching script.
+    - Ensure that you have R and python on your machine and if using a server ensure they are loaded. For example to load R on a server you may need to add something resembling “module load R/4.0.0” to your batching script.
 
 3. Once the above information is added and saved in the ``RUN_ENIGMA_BD_PRS_noContainer.sh`` script you can run the analyses (a) by batching a job script or (b) running the analyses locally.
     - We provide an example script to batch SLURM jobs (BATCH_BD_PRS.job). This will need to be augmented for your server. NOTE: Ensure the cores and memory stated in the ``RUN_ENIGMA_BD_PRS_noContainer.sh`` script does not exceed the requested cores and memory in the slurm job script.
