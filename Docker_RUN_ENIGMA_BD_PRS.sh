@@ -77,7 +77,6 @@ mkdir -p ${OUT_DIR}
 ${PLINK} --bfile ${Sample_Dir}/${Prefix} \
 	--threads ${NCORES} --memory ${MEMORY} \
 	--extract ${OUTDIR}/NonDup_SNPlist.txt \
-																		--keep ${Project_Path}/TOP_100_list.txt \
 	--make-bed --out ${OUT_DIR}/${Sample_Name}_rmDupSNP
 
 
