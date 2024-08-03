@@ -166,7 +166,7 @@ Email Nadine Parker when you are ready to share your data.
  - ``AgeofOnset`` - Age of Onset (in years) of the first DSM-defined mood episode. Set all controls = NA
  - ``HistoryPsychosis`` - History of psychotic episodes: 1 = yes, 0 = no. Set all controls = NA
  - ``Site`` - If cohort data was collected across multiple sites, indicate site for each subject. If all data is from same site, mark entire column = NA
- - ``Ethinicity`` - Self-reported ancestry or ethnicity 
+ - ``Ethnicity`` - Self-reported ancestry or ethnicity 
 
 ### Additional LiftOver Instructions
 #### Here are some basic instructions on how to generate a BED file and use the command line LiftOver tool to convert from GRCh37 (hg19) to CRCh38 (hg38). It is recommended that you still familiarize yourself with the official documentation (https://genome.ucsc.edu/FAQ/FAQformat.html#format1)
