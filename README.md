@@ -12,7 +12,7 @@ PLEASE DO NOT CHANGE THE LOCATION OF EXISTING FILES OR FOLDERS IN THE DOWNLOADED
 ## 2.	Format Your Genetic Data
 This protocol assumes the input data has (i) already been imputed, (ii) is in PLINK v1 binary format (.bed, .bim, .fam files), and (iii) is in genomic build GRCh38.
  
-1. If your data is not imputed you may wish to use the [ENIGMA Genetics Imputation Protocol](https://enigma.ini.usc.edu/protocols/genetics-protocols/imputation-protocol/).
+1. If your data is not imputed, you may wish to use the [ENIGMA Genetics Imputation Protocol](https://enigma.ini.usc.edu/protocols/genetics-protocols/imputation-protocol/).
 2. If your data is imputed but in another format (ped/map, vcf, bgen, etc.) you can use [PLINK](https://www.cog-genomics.org/plink/1.9/input) to convert to the required format. Below is an example for .ped/.map and .vcf formats
 ```
 plink --file ped_map_FilePrefix --make-bed --out New_FilePrefix
@@ -21,9 +21,7 @@ or
 ```
 plink --vcf vcf_FilePrefix --make-bed --out New_FilePrefix
 ```
-3. If your data is in another genomic build you can use the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool to convert to the GRCh38 (or hg38) build. For instructinos on formatting a BED file see here https://genome.ucsc.edu/FAQ/FAQformat.html#format1. For the command line version of the LiftOver tool see instructions here https://genome.ucsc.edu/FAQ/FAQdownloads.html#liftOver. We also provide a basic example using the command line version on a linux machine in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you and you can use this information for LiftOver.
-
-**IMPORTANT NOTE**, once genomic coordinates have been lifted you will need to generate new plink files updating the chromosomes and positions of your plink v1 files. An example script is provided in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS#additional-liftover-instructions) section below.
+3. If your data is in another genomic build, we provide in the ``ENIGMA_BD_PRS`` project directory (or subdirectories) (i) the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool **FOR LINUX SYSTEMS ONLY**, (ii) a chain file to convert from GRCh37 (hg19) to GRCh38 (hg38), and (iii) a script to run the genomic build conversion using either the Singularity (Auto_LiftOver_Singularity.sh) or Docker (Auto_LiftOver_Docker.sh) containers built for this project (see [Perform the Analyses]()). Instructions on converting genomic builds are in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you.
 
 If you require help with converting your data please post an issue on the GitHub page using the issues tab above.
 
@@ -169,8 +167,41 @@ Email Nadine Parker when you are ready to share your data.
  - ``Ethnicity`` - Self-reported ancestry or ethnicity 
 
 ### Additional LiftOver Instructions
-#### Here are some basic instructions on how to generate a BED file and use the command line LiftOver tool to convert from GRCh37 (hg19) to CRCh38 (hg38). It is recommended that you still familiarize yourself with the official documentation (https://genome.ucsc.edu/FAQ/FAQformat.html#format1)
- 1. Generate a BED file using your .bim plink file. Below is an example usine R code:
+#### Using the Auto_LiftOver* scripts provided
+1. Ensure that your system has singularity installed (https://docs.sylabs.io/guides/3.0/user-guide/installation.html) or docker installed (https://www.docker.com/get-started/).
+   If using Docker Desktop, you may want to increase the resources. Navigate to settings Resources and maximize the available CPU limit, Memory limit, and Swap. Additionally, While docker is running/loaded, to initiate the container open a   
+   terminal and type the following command depending on your operating system:
+```
+LINUX/Windows/MAC (Intel): docker pull ghcr.io/comorment/ldpred2:latest 
+MAC (M1/M2): docker pull -–platform=linux/amd64 ghcr.io/comorment/ldpred2:latest
+```
+2. Navigate to the “ENIGMA_BD_PRS” project directory and depending on which container you choose open the “Auto_LiftOver_Singularity.sh” or “Auto_LiftOver_Docker.sh” script. Add the appropriate information requested at the top of the script and save the edits. Below is a list of the required information:
+    - ``Base_Dir``: replace the text “/PATH/TO/BASE/DIR” with the full path to a parent directory that contains all the necessary files and downloaded project directory. For example: export Base_Dir=/Users/nadine
+    - ``Project_Path``: replace the text “/PATH/TO/DOWNLOADED/FOLDER/ENIGMA_BD_PRS” with the full path to the ENIGMA_BD_PRS directory. For example: export Project_DIR=/Users/nadine/Documents/ENIGMA_BD_PRS
+    - ``Sample_Dir``: replace the text “/PATH/TO/GENETIC/DATA” with the full path to your cohorts PLINK v1 files (NOTE, .bed, .bim, .fam should all be in the same directory). For example: export Sample_Dir=/Users/nadine/Documents
+    - ``Prefix``: add the prefix used for the PLINK v1 files (.bed, .bim, .fam). For example: export Prefix=TOP_GRCh38
+    - ``liftover_chain``: This is hard coded to the provided chain file needed to convert from hg19 to hg38. If your data is in the hg18 (GRCh36) build you can download the hg18 to hg38 file from here (https://hgdownload.cse.ucsc.edu/goldenpath/hg18/liftOver/). If you require another chain file see here (https://hgdownload.soe.ucsc.edu/downloads.html).
+    - ``NCORES``: this specifies the number of system cores/threads you would like to use for analysis. The available cores will vary based on machine.
+    - ``MEMORY``: this specifies the amount of memory available per core in MB. REMEMBER, you will need around 32GB or RAM to run the analyses. The default setting is to use 8 cores with ~8GB of memory (64GB of RAM) which takes ~1.5 hours to run (with n =2000 participants).
+  
+3. Once the above information is added and saved you can run the LiftOver conversion (a) by batching a job script or (b) running the analyses locally.
+    - to run the analysis locally enter the following: 
+``
+sh Auto_LiftOver_Singularity.sh 
+``
+or 
+``
+sh Auto_LiftOver_Docker.sh 
+``
+
+#### NOT using the Auto_LiftOver* scripts provided
+If you cannot run the containers on you system or you are not working on a linux system, you can run the LiftOver conversion using the instructions below. We encourage you to familiarize yourself with the following:
+- instructinos on formatting a BED file here https://genome.ucsc.edu/FAQ/FAQformat.html#format1.
+- the command line version of the LiftOver tool see instructions here https://genome.ucsc.edu/FAQ/FAQdownloads.html#liftOver.
+
+Below are some basic instructions on how to generate a BED file and use the command line LiftOver tool to convert from GRCh37 (hg19) to CRCh38 (hg38).
+   
+ 1. Generate a BED file using your .bim plink file. Below is an example using R code:
 ```
 library(data.table); library(dplyr)
 
@@ -193,7 +224,7 @@ bim$V1 <- paste0("chr", bim$V1)
 write.table(bim, file="YOUR_NAME_FOR_LIFTOVER.bed", row.names = F, col.names = F, sep = "\t", quote = F)
 ```
 
- 2. Run LiftOver using the command line tool located [here](https://github.com/nadineparker/ENIGMA_BD_PRS/blob/main/liftOver) (navigate to the "..." button near the top right and click download) and a GRCh37 (hg19) to GRCh38 (hg38) chainfile downloaded from [here](https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/). You will need to supply the following to run liftOver:
+ 2. Run LiftOver using the command line tool (https://genome-store.ucsc.edu/) and a chainfile downloaded from [here]([https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/](https://hgdownload.soe.ucsc.edu/downloads.html)). You will need to supply the following to run liftOver:
     - ``liftOver`` the executable file to run the analyses
     - ``YOUR_NAME_FOR_LIFTOVER.bed`` - the BED file that contains coordinates to lift to a new build (generated in the step above).
     - ``hg19toHG38.over.chan.gz`` - a chainfile for lifting from your current genetic build to build GRCh38 (hg19). This example uses a GRCh37 (hg19) to GRCh38 (hg38) chainfile
