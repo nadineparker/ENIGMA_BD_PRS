@@ -21,7 +21,7 @@ or
 ```
 plink --vcf vcf_FilePrefix --make-bed --out New_FilePrefix
 ```
-3. If your data is in another genomic build, we provide in the ``ENIGMA_BD_PRS`` project directory (or subdirectories) (i) the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool **FOR LINUX SYSTEMS ONLY**, (ii) a chain file to convert from GRCh37 (hg19) to GRCh38 (hg38), and (iii) a script to run the genomic build conversion using either the Singularity (Auto_LiftOver_Singularity.sh) or Docker (Auto_LiftOver_Docker.sh) containers built for this project (see [Perform the Analyses]()). Instructions on converting genomic builds are in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you.
+3. If your data is in another genomic build, we provide in the ``ENIGMA_BD_PRS`` project directory (or subdirectories) (i) the [LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver) tool **FOR LINUX SYSTEMS ONLY**, (ii) a chain file to convert from GRCh37 (hg19) to GRCh38 (hg38), and (iii) a script to run the genomic build conversion using either the Singularity (Auto_LiftOver_Singularity.sh) or Docker (Auto_LiftOver_Docker.sh) containers built for this project. Instructions on converting genomic builds are in the [Additional LiftOver Instructions](https://github.com/nadineparker/ENIGMA_BD_PRS#additional-liftover-instructions) section below. Running the analyses with genetic data in the wrong build will produce an error. If your data is in GRCh37 (hg19) or GRCh36 (hg18) the error will inform you.
 
 If you require help with converting your data please post an issue on the GitHub page using the issues tab above.
 
@@ -169,8 +169,7 @@ Email Nadine Parker when you are ready to share your data.
 ### Additional LiftOver Instructions
 #### Using the Auto_LiftOver* scripts provided
 1. Ensure that your system has singularity installed (https://docs.sylabs.io/guides/3.0/user-guide/installation.html) or docker installed (https://www.docker.com/get-started/).
-   If using Docker Desktop, you may want to increase the resources. Navigate to settings Resources and maximize the available CPU limit, Memory limit, and Swap. Additionally, While docker is running/loaded, to initiate the container open a   
-   terminal and type the following command depending on your operating system:
+   If using Docker Desktop, you may want to increase the resources. Navigate to settings Resources and maximize the available CPU limit, Memory limit, and Swap. Additionally, While docker is running/loaded, to initiate the container open a terminal and type the following command depending on your operating system:
 ```
 LINUX/Windows/MAC (Intel): docker pull ghcr.io/comorment/ldpred2:latest 
 MAC (M1/M2): docker pull -–platform=linux/amd64 ghcr.io/comorment/ldpred2:latest
@@ -224,7 +223,7 @@ bim$V1 <- paste0("chr", bim$V1)
 write.table(bim, file="YOUR_NAME_FOR_LIFTOVER.bed", row.names = F, col.names = F, sep = "\t", quote = F)
 ```
 
- 2. Run LiftOver using the command line tool (https://genome-store.ucsc.edu/) and a chainfile downloaded from [here]([https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/](https://hgdownload.soe.ucsc.edu/downloads.html)). You will need to supply the following to run liftOver:
+ 2. Run LiftOver using the command line tool (https://genome-store.ucsc.edu/) and a chainfile downloaded from here (https://hgdownload.cse.ucsc.edu/goldenpath/hg19/liftOver/). You will need to supply the following to run liftOver:
     - ``liftOver`` the executable file to run the analyses
     - ``YOUR_NAME_FOR_LIFTOVER.bed`` - the BED file that contains coordinates to lift to a new build (generated in the step above).
     - ``hg19toHG38.over.chan.gz`` - a chainfile for lifting from your current genetic build to build GRCh38 (hg19). This example uses a GRCh37 (hg19) to GRCh38 (hg38) chainfile
