@@ -5,7 +5,7 @@ The following instructions are for generating polygenic scores for the ENIGMA Bi
 Given the large size of some necessary files, **we strongly recommend running this analysis on a server where you can request 32GB of memory (RAM) and which has at least 25GB of free storage**. We also recommend using our singularity or docker containers which include all necessary software to run the analyses on Linux machines. We have successfully tested the docker container with smaller data sets (n=100 participants) on a MAC M1 chip laptop (16GB of RAM; runtime ~7hrs). Although, we still recommend using a machine with more RAM as larger samples will increase runtime or may not complete. We have not tested the containers using a Windows OS and therefore do not recommend using a Windows machine.  
 
 ## 1. Download Project Files
-Download and unzip the ``ENIGMA_BD_PRS.zip`` directory from figshare (https://doi.org/10.6084/m9.figshare.25872160.v2). All necessary project files are located in that directory. NOTE: some files are large, therefore, (1) this download will take time (hours) and (2) we recommend having ~25GB of free space on your system.
+Download and unzip the ``ENIGMA_BD_PRS.zip`` directory from figshare (https://doi.org/10.6084/m9.figshare.25872160.v3). All necessary project files are located in that directory. NOTE: some files are large, therefore, (1) this download will take time (hours) and (2) we recommend having ~25GB of free space on your system.
 
 PLEASE DO NOT CHANGE THE LOCATION OF EXISTING FILES OR FOLDERS IN THE DOWNLOADED ``ENIGMA_BD_PRS DIRECTORY``. However, you can add your own files to this project directory.
 
