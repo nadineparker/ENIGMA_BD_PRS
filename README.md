@@ -181,7 +181,7 @@ MAC (M1/M2): docker pull -–platform=linux/amd64 ghcr.io/comorment/ldpred2:late
     - ``Prefix``: add the prefix used for the PLINK v1 files (.bed, .bim, .fam). For example: export Prefix=TOP_GRCh38
     - ``liftover_chain``: This is hard coded to the provided chain file needed to convert from hg19 to hg38. If your data is in the hg18 (GRCh36) build you can download the hg18 to hg38 file from here (https://hgdownload.cse.ucsc.edu/goldenpath/hg18/liftOver/). If you require another chain file see here (https://hgdownload.soe.ucsc.edu/downloads.html).
     - ``NCORES``: this specifies the number of system cores/threads you would like to use for analysis. The available cores will vary based on machine.
-    - ``MEMORY``: this specifies the amount of memory available per core in MB. REMEMBER, you will need around 32GB or RAM to run the analyses. The default setting is to use 8 cores with ~8GB of memory (64GB of RAM) which takes ~1.5 hours to run (with n =2000 participants).
+    - ``MEMORY``: this specifies the amount of memory available per core in MB. REMEMBER, you will need around 32GB or RAM to run the analyses. The default setting is to use 8 cores with ~8GB of memory (64GB of RAM).
   
 3. Once the above information is added and saved you can run the LiftOver conversion (a) by batching a job script or (b) running the analyses locally.
     - to run the analysis locally enter the following: 
