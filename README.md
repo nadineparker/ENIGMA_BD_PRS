@@ -12,7 +12,7 @@ PLEASE DO NOT CHANGE THE LOCATION OF EXISTING FILES OR FOLDERS IN THE DOWNLOADED
 ## 2.	Format Your Genetic Data
 This protocol assumes the input data has (i) already been imputed, (ii) is in PLINK v1 binary format (.bed, .bim, .fam files), and (iii) is in genomic build GRCh38.
  
-1. If your data is not imputed, you may wish to use the [ENIGMA Genetics Imputation Protocol](https://enigma.ini.usc.edu/protocols/genetics-protocols/imputation-protocol/).
+1. If your data is not imputed, you may wish to use the [ENIGMA Genetics Imputation Protocol](https://enigma.ini.usc.edu/wp-content/uploads/2020/02/ENIGMA-1KGP_p3v5-Cookbook_20170713.pdf).
 2. If your data is imputed but in another format (ped/map, vcf, bgen, etc.) you can use [PLINK](https://www.cog-genomics.org/plink/1.9/input) to convert to the required format. Below is an example for .ped/.map and .vcf formats
 ```
 plink --file ped_map_FilePrefix --make-bed --out New_FilePrefix
